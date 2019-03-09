@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wp.week.mapper.DynamicInfoMapper">
+
+	<!-- 字段-->
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selInfo" resultType="dynamicInfoDto">
+		 SELECT
+		 <include refid="sqlColumns" />
+		 FROM tb_dynamic_info
+		 WHERE id = #{id}
+	</select>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="del" parameterType="dynamicInfoDto">
+		 DELETE FROM tb_dynamic_info
+		 WHERE id = #{id}
+	</delete>
+
+	<!-- 添加 -->
+	<insert id="add" parameterType="dynamicInfoDto" keyColumn="id" useGeneratedKeys="true">
+		 INSERT INTO tb_dynamic_info
+ 			(
+ 			id,
+			plant_no,
+			basic_state,
+			is_ill,
+			checker,
+			is_move,
+			remark
+ 			) 
+		 VALUES 
+ 			(
+ 			#{id},
+			#{plantNo},
+			#{basicState},
+			#{isIll},
+			#{checker},
+			#{isMove},
+			#{remark}
+ 			) 
+	</insert>
+
+	<!-- 修 改-->
+	<update id="edit" parameterType="dynamicInfoDto">
+		 UPDATE tb_dynamic_info
+ 		 <trim prefix="SET" suffixOverrides=","> 
+			<if test="plantNo != null">plant_no = #{plantNo},</if>
+			<if test="basicState != null">basic_state = #{basicState},</if>
+			<if test="isIll != null">is_ill = #{isIll},</if>
+			<if test="checker != null">checker = #{checker},</if>
+			<if test="isMove != null">is_move = #{isMove},</if>
+			<if test="remark != null">remark = #{remark},</if>
+ 		 </trim>
+		 WHERE id = #{id}
+	</update>
+
+	<sql id="sqlColumns">
+    	id id, 
+    	plant_no plantNo, 
+    	basic_state basicState, 
+    	is_ill isIll, 
+    	checker checker, 
+    	is_move isMove, 
+    	remark remark    
+	</sql>
+
+	<!-- 条件-->
+	<sql id="sqlWhere">
+    	<where>
+	    	<if test="id != null"> and id = #{id}</if> 
+        	<if test="plantNo != null"> and plant_no = #{plantNo}</if> 
+        	<if test="basicState != null"> and basic_state = #{basicState}</if> 
+        	<if test="isIll != null"> and is_ill = #{isIll}</if> 
+        	<if test="checker != null"> and checker = #{checker}</if> 
+        	<if test="isMove != null"> and is_move = #{isMove}</if> 
+        	<if test="remark != null"> and remark = #{remark}</if> 
+    	</where>
+	</sql>
+
+	<select id="count" resultType="int">
+		 SELECT
+		 count(id)
+		 FROM tb_dynamic_info
+		 <include refid="sqlWhere"/>
+	</select>
+
+	<select id="list" resultType="dynamicInfoDto">
+		 SELECT
+		 <include refid="sqlColumns"/>
+		 FROM tb_dynamic_info
+		 <include refid="sqlWhere"/>
+	</select>
+
+	<select id="queryPage" resultType="dynamicInfoDto">
+		 SELECT
+		 <include refid="sqlColumns"/>
+		 FROM tb_dynamic_info
+		 <include refid="sqlWhere"/>
+	</select>
+
+</mapper>

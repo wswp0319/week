@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wp.week.mapper.CommentMapper">
+
+	<!-- 字段-->
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selInfo" resultType="commentDto">
+		 SELECT
+		 <include refid="sqlColumns" />
+		 FROM tb_comment
+		 WHERE id = #{id}
+	</select>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="del" parameterType="commentDto">
+		 DELETE FROM tb_comment
+		 WHERE id = #{id}
+	</delete>
+
+	<!-- 添加 -->
+	<insert id="add" parameterType="commentDto" keyColumn="id" useGeneratedKeys="true">
+		 INSERT INTO tb_comment
+ 			(
+ 			id,
+			plant_id,
+			content,
+			create_time,
+			revier
+ 			) 
+		 VALUES 
+ 			(
+ 			#{id},
+			#{plantId},
+			#{content},
+			#{createTime},
+			#{revier}
+ 			) 
+	</insert>
+
+	<!-- 修 改-->
+	<update id="edit" parameterType="commentDto">
+		 UPDATE tb_comment
+ 		 <trim prefix="SET" suffixOverrides=","> 
+			<if test="plantId != null">plant_id = #{plantId},</if>
+			<if test="content != null">content = #{content},</if>
+			<if test="createTime != null">create_time = #{createTime},</if>
+			<if test="revier != null">revier = #{revier},</if>
+ 		 </trim>
+		 WHERE id = #{id}
+	</update>
+
+	<sql id="sqlColumns">
+    	id id, 
+    	plant_id plantId, 
+    	content content, 
+    	create_time createTime, 
+    	revier revier    
+	</sql>
+
+	<!-- 条件-->
+	<sql id="sqlWhere">
+    	<where>
+	    	<if test="id != null"> and id = #{id}</if> 
+        	<if test="plantId != null"> and plant_id = #{plantId}</if> 
+        	<if test="content != null"> and content = #{content}</if> 
+        	<if test="createTime != null"> and create_time = #{createTime}</if> 
+        	<if test="revier != null"> and revier = #{revier}</if> 
+    	</where>
+	</sql>
+
+	<select id="count" resultType="int">
+		 SELECT
+		 count(id)
+		 FROM tb_comment
+		 <include refid="sqlWhere"/>
+	</select>
+
+	<select id="list" resultType="commentDto">
+		 SELECT
+		 <include refid="sqlColumns"/>
+		 FROM tb_comment
+		 <include refid="sqlWhere"/>
+	</select>
+
+	<select id="queryPage" resultType="commentDto">
+		 SELECT
+		 <include refid="sqlColumns"/>
+		 FROM tb_comment
+		 <include refid="sqlWhere"/>
+	</select>
+
+</mapper>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wp.week.mapper.QuantityMapper">
+
+    <!-- 字段-->
+    <!-- 查询（根据主键ID查询） -->
+    <select id="selInfo" resultType="quantityDto">
+        SELECT
+        <include refid="sqlColumns"/>
+        FROM tb_quantity
+        WHERE id = #{id}
+    </select>
+
+    <!--删除：根据主键ID删除-->
+    <delete id="del" parameterType="quantityDto">
+		 DELETE FROM tb_quantity
+		 WHERE id = #{id}
+	</delete>
+
+    <!-- 添加 -->
+    <insert id="add" parameterType="quantityDto" keyColumn="id" useGeneratedKeys="true">
+		 INSERT INTO tb_quantity
+ 			(
+ 			id,
+ 			plant_id,
+			in_quantity,
+			out_quantity,
+			total_quantity,
+			difference,
+			gradient,
+			create_time,
+			update_time,
+			checker,
+			is_active,
+			remark
+ 			) 
+		 VALUES 
+ 			(
+ 			#{id},
+ 			#{plantId}
+			#{inQuantity},
+			#{outQuantity},
+			#{totalQuantity},
+			#{difference},
+			#{gradient},
+			#{createTime},
+			#{updateTime},
+			#{checker},
+			#{isActive},
+			#{remark}
+ 			) 
+	</insert>
+
+    <!-- 修 改-->
+    <update id="edit" parameterType="quantityDto">
+        UPDATE tb_quantity
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="inQuantity != null">in_quantity = #{inQuantity},</if>
+            <if test="plantId != null">plant_id = #{plantId},</if>
+            <if test="outQuantity != null">out_quantity = #{outQuantity},</if>
+            <if test="totalQuantity != null">total_quantity = #{totalQuantity},</if>
+            <if test="difference != null">difference = #{difference},</if>
+            <if test="gradient != null">gradient = #{gradient},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="checker != null">checker = #{checker},</if>
+            <if test="isActive != null">is_active = #{isActive},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <sql id="sqlColumns">
+    	id id,
+    	plant_id plantId,
+    	in_quantity inQuantity, 
+    	out_quantity outQuantity, 
+    	total_quantity totalQuantity, 
+    	difference difference, 
+    	gradient gradient, 
+    	create_time createTime, 
+    	update_time updateTime, 
+    	checker checker, 
+    	is_active isActive, 
+    	remark remark    
+	</sql>
+
+    <!-- 条件-->
+    <sql id="sqlWhere">
+        <where>
+            <if test="id != null">and id = #{id}</if>
+            <if test="inQuantity != null">and in_quantity = #{inQuantity}</if>
+            <if test="plantId != null">and plant_id = #{plantId}</if>
+            <if test="outQuantity != null">and out_quantity = #{outQuantity}</if>
+            <if test="totalQuantity != null">and total_quantity = #{totalQuantity}</if>
+            <if test="difference != null">and difference = #{difference}</if>
+            <if test="gradient != null">and gradient = #{gradient}</if>
+            <if test="createTime != null">and create_time = #{createTime}</if>
+            <if test="updateTime != null">and update_time = #{updateTime}</if>
+            <if test="checker != null">and checker = #{checker}</if>
+            <if test="isActive != null">and is_active = #{isActive}</if>
+            <if test="remark != null">and remark = #{remark}</if>
+        </where>
+    </sql>
+
+    <select id="count" resultType="int">
+        SELECT
+        count(id)
+        FROM tb_quantity
+        <include refid="sqlWhere"/>
+    </select>
+
+    <select id="list" resultType="quantityDto">
+        SELECT
+        id id,
+        case plant_id
+        when 1 then '小麦'
+        when 2 then '大米'
+        when 3 then '棉花'
+        when 4 then '玉米'
+        when 5 then '大豆'
+        when 6 then '青稞'
+        when 7 then '马铃薯'
+        when 8 then '高粱'
+        when 9 then '谷子'
+        when 10 then '油菜'
+
+        end plantId,
+        in_quantity inQuantity,
+        out_quantity outQuantity,
+        total_quantity totalQuantity,
+        difference difference,
+        gradient gradient,
+        create_time createTime,
+        update_time updateTime,
+        checker checker,
+        is_active isActive,
+        remark remark
+        FROM tb_quantity
+        <include refid="sqlWhere"/>
+    </select>
+
+
+    <select id="queryPage" resultType="quantityDto">
+        SELECT
+        <include refid="sqlColumns"/>
+        FROM tb_quantity
+        <include refid="sqlWhere"/>
+    </select>
+
+</mapper>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wp.week.mapper.CargoMapper">
+
+	<!-- 字段-->
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selInfo" resultType="cargoDto">
+		 SELECT
+		 <include refid="sqlColumns" />
+		 FROM tb_cargo
+		 WHERE id = #{id}
+	</select>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="del" parameterType="cargoDto">
+		 DELETE FROM tb_cargo
+		 WHERE id = #{id}
+	</delete>
+
+	<!-- 添加 -->
+	<insert id="add" parameterType="cargoDto" keyColumn="id" useGeneratedKeys="true">
+		 INSERT INTO tb_cargo
+ 			(
+ 			id,
+			cargo_number,
+			storage_site,
+			warehouse_name,
+			assortment,
+			storage_mode,
+			create_time,
+			update_time,
+			manager,
+			is_active,
+			remark
+ 			) 
+		 VALUES 
+ 			(
+ 			#{id},
+			#{cargoNumber},
+			#{storageSite},
+			#{warehouseName},
+			#{assortment},
+			#{storageMode},
+			#{createTime},
+			#{updateTime},
+			#{manager},
+			#{isActive},
+			#{remark}
+ 			) 
+	</insert>
+
+	<!-- 修 改-->
+	<update id="edit" parameterType="cargoDto">
+		 UPDATE tb_cargo
+ 		 <trim prefix="SET" suffixOverrides=","> 
+			<if test="cargoNumber != null">cargo_number = #{cargoNumber},</if>
+			<if test="storageSite != null">storage_site = #{storageSite},</if>
+			<if test="warehouseName != null">warehouse_name = #{warehouseName},</if>
+			<if test="assortment != null">assortment = #{assortment},</if>
+			<if test="storageMode != null">storage_mode = #{storageMode},</if>
+			<if test="createTime != null">create_time = #{createTime},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+			<if test="manager != null">manager = #{manager},</if>
+			<if test="isActive != null">is_active = #{isActive},</if>
+			<if test="remark != null">remark = #{remark},</if>
+ 		 </trim>
+		 WHERE id = #{id}
+	</update>
+
+	<sql id="sqlColumns">
+    	id id, 
+    	cargo_number cargoNumber, 
+    	storage_site storageSite, 
+    	warehouse_name warehouseName, 
+    	assortment assortment, 
+    	storage_mode storageMode, 
+    	create_time createTime, 
+    	update_time updateTime, 
+    	manager manager, 
+    	is_active isActive, 
+    	remark remark    
+	</sql>
+
+	<!-- 条件-->
+	<sql id="sqlWhere">
+    	<where>
+	    	<if test="id != null"> and id = #{id}</if> 
+        	<if test="cargoNumber != null"> and cargo_number = #{cargoNumber}</if> 
+        	<if test="storageSite != null"> and storage_site = #{storageSite}</if> 
+        	<if test="warehouseName != null"> and warehouse_name = #{warehouseName}</if> 
+        	<if test="assortment != null"> and assortment = #{assortment}</if> 
+        	<if test="storageMode != null"> and storage_mode = #{storageMode}</if> 
+        	<if test="createTime != null"> and create_time = #{createTime}</if> 
+        	<if test="updateTime != null"> and update_time = #{updateTime}</if> 
+        	<if test="manager != null"> and manager = #{manager}</if> 
+        	<if test="isActive != null"> and is_active = #{isActive}</if> 
+        	<if test="remark != null"> and remark = #{remark}</if> 
+    	</where>
+	</sql>
+
+	<select id="count" resultType="int">
+		 SELECT
+		 count(id)
+		 FROM tb_cargo
+		 <include refid="sqlWhere"/>
+	</select>
+
+	<select id="list" resultType="cargoDto">
+		 SELECT
+		 <include refid="sqlColumns"/>
+		 FROM tb_cargo
+		 <include refid="sqlWhere"/>
+	</select>
+
+	<select id="queryPage" resultType="cargoDto">
+		 SELECT
+		 <include refid="sqlColumns"/>
+		 FROM tb_cargo
+		 <include refid="sqlWhere"/>
+	</select>
+
+</mapper>

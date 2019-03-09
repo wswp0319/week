@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>文章列表--layui后台管理模板</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="../../../static/layui/css/layui.css" media="all" />
+	<link rel="stylesheet" href="//at.alicdn.com/t/font_tnyc012u2rlwstt9.css" media="all" />
+	<!--<link rel="stylesheet" href="../../../static/css/news.css" media="all" />-->
+</head>
+<body class="childrenBody">
+	<blockquote class="layui-elem-quote news_search">
+		<form action="/download">
+		<div class="layui-inline">
+			<!--<div class="layui-input-inline">-->
+				<!--<select name="workSchedule" class="layui-input search_input" lay-search="">-->
+					<!--<option value="-1">请选择分组</option>-->
+					<!--<option value="1">接口组</option>-->
+					<!--<option value="2">测试&运维组</option>-->
+					<!--<option value="3">后台组</option>-->
+					<!--<option value="4">产品组</option>-->
+					<!--<option value="5">APP组</option>-->
+					<!--<option value="6">特殊组</option>-->
+				<!--</select>-->
+			<!--</div>-->
+
+            <div class="layui-input-inline">
+                <input type="text" placeholder="开始时间" name="planStartDate" class="layui-input start_data" lay-verify="required|date" onclick="layui.laydate({elem:this})">
+            </div>
+			至
+            <div class="layui-input-inline">
+                <input type="text" placeholder="结束时间" name="planEndDate" class="layui-input end_data" lay-verify="required|date" onclick="layui.laydate({elem:this})">
+            </div>
+		    <a class="layui-btn search_btn">查询</a>
+		</div>
+		<div class="layui-inline">
+			<!--<a class="layui-btn layui-btn-normal newsAdd_btn" href="/editDaily">添加</a>-->
+			<!--<a class="layui-btn layui-btn-normal newsAdd_btn" href="/editQuantity">出入库管理</a>-->
+		</div>
+
+		<div class="layui-inline">
+			<a class="layui-btn layui-btn-danger batchDel">批量删除</a>
+		</div>
+		<div class="layui-inline">
+
+			<!--<button class="layui-btn recommend" style="background-color:#5FB878" type="submit">导出周报</button>-->
+		</div>
+		</form>
+	</blockquote>
+	<div class="layui-form news_list">
+	  	<table class="layui-table">
+		    <colgroup>
+				<!--6-->
+				<COL WIDTH="50">
+				<COL>
+				<COL WIDTH="9%">
+				<COL WIDTH="9%">
+				<COL WIDTH="9%">
+				<COL WIDTH="9%">
+				<COL WIDTH="9%">
+				<COL WIDTH="9%">
+
+				<!--<COL WIDTH="15%">-->
+		    </colgroup>
+		    <thead>
+
+            <tr>
+            <th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose" id="allChoose"></th>
+				<th>粮食种类</th>
+				<th>入库量</th>
+				<!--<th>总数量</th>-->
+				<th>入库时间</th>
+				<th>备注</th>
+				<!--<th>操作</th>-->
+
+            </tr>
+
+		    </thead>
+		    <tbody class="news_content"></tbody>
+		</table>
+	</div>
+	<div id="page"></div>
+	<script type="text/javascript" src="../../../static/layui/layui.js"></script>
+	<script type="text/javascript" src="../../../static/page/js/iningList.js"></script>
+	<!--<script type="text/javascript" src="../../../static/page/js/quantityAdd.js"></script>-->
+	<script type="text/javascript" src="../../../static/layui/lay/modules/layer.js"></script>
+	<!--<script type="text/javascript" src="../../../static/layui/lay/modules/jquery-1.10.2.min.js"></script>-->
+	<!--<script type="text/javascript" src="../../../static/layui/lay/modules/yichu.js"></script>-->
+</body>
+</html>

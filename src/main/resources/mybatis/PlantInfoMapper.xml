@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wp.week.mapper.PlantInfoMapper">
+
+	<!-- 字段-->
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selInfo" resultType="plantInfoDto">
+		 SELECT
+		 <include refid="sqlColumns" />
+		 FROM tb_plant_info
+		 WHERE id = #{id}
+	</select>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="del" parameterType="plantInfoDto">
+		 DELETE FROM tb_plant_info
+		 WHERE id = #{id}
+	</delete>
+
+	<!-- 添加 -->
+	<insert id="add" parameterType="plantInfoDto" keyColumn="id" useGeneratedKeys="true">
+		 INSERT INTO tb_plant_info
+ 			(
+ 			id,
+			plant_no,
+			plant_name,
+			gsno,
+			prodarea,
+			ecolhabit,
+			image_path,
+			dimen_code,
+			create_time,
+			update_time,
+			is_state,
+			remark,
+			username
+ 			) 
+		 VALUES 
+ 			(
+ 			#{id},
+			#{plantNo},
+			#{plantName},
+			#{gsno},
+			#{prodarea},
+			#{ecolhabit},
+			#{imagePath},
+			#{dimenCode},
+			#{createTime},
+			#{updateTime},
+			#{isState},
+			#{remark},
+			#{username}
+ 			) 
+	</insert>
+
+	<!-- 修 改-->
+	<update id="edit" parameterType="plantInfoDto">
+		 UPDATE tb_plant_info
+ 		 <trim prefix="SET" suffixOverrides=","> 
+			<if test="plantNo != null">plant_no = #{plantNo},</if>
+			<if test="plantName != null">plant_name = #{plantName},</if>
+			<if test="gsno != null">gsno = #{gsno},</if>
+			<if test="prodarea != null">prodarea = #{prodarea},</if>
+			<if test="ecolhabit != null">ecolhabit = #{ecolhabit},</if>
+			<if test="imagePath != null">image_path = #{imagePath},</if>
+			<if test="dimenCode != null">dimen_code = #{dimenCode},</if>
+			<if test="createTime != null">create_time = #{createTime},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+			<if test="isState != null">is_state = #{isState},</if>
+			<if test="remark != null">remark = #{remark},</if>
+			<if test="username != null">username = #{username},</if>
+ 		 </trim>
+		 WHERE id = #{id}
+	</update>
+
+	<sql id="sqlColumns">
+    	id id, 
+    	plant_no plantNo, 
+    	plant_name plantName, 
+    	gsno gsno, 
+    	prodarea prodarea, 
+    	ecolhabit ecolhabit, 
+    	image_path imagePath, 
+    	dimen_code dimenCode, 
+    	DATE_FORMAT(create_time,'%Y-%m-%d') createTime,
+    	DATE_FORMAT(update_time,'%Y-%m-%d') updateTime,
+    	is_state isState, 
+    	remark remark,
+    	username username
+	</sql>
+
+	<!-- 条件-->
+	<sql id="sqlWhere">
+    	<where>
+	    	<if test="id != null"> and id = #{id}</if> 
+        	<if test="plantNo != null"> and plant_no = #{plantNo}</if> 
+        	<if test="plantName != null"> and plant_name = #{plantName}</if> 
+        	<if test="gsno != null"> and gsno = #{gsno}</if> 
+        	<if test="prodarea != null"> and prodarea = #{prodarea}</if> 
+        	<if test="ecolhabit != null"> and ecolhabit = #{ecolhabit}</if> 
+        	<if test="imagePath != null"> and image_path = #{imagePath}</if> 
+        	<if test="dimenCode != null"> and dimen_code = #{dimenCode}</if> 
+        	<if test="createTime != null"> and create_time = #{createTime}</if> 
+        	<if test="updateTime != null"> and update_time = #{updateTime}</if> 
+        	<if test="isState != null"> and is_state = #{isState}</if> 
+        	<if test="remark != null"> and remark = #{remark}</if> 
+        	<if test="username != null"> and username = #{username}</if>
+    	</where>
+	</sql>
+
+	<select id="count" resultType="int">
+		 SELECT
+		 count(id)
+		 FROM tb_plant_info
+		 <include refid="sqlWhere"/>
+	</select>
+
+	<select id="list" resultType="plantInfoDto">
+		 SELECT
+		 <include refid="sqlColumns"/>
+		 FROM tb_plant_info
+		 <include refid="sqlWhere"/>
+	</select>
+
+	<select id="queryPage" resultType="plantInfoDto">
+		 SELECT
+		 <include refid="sqlColumns"/>
+		 FROM tb_plant_info
+		 <include refid="sqlWhere"/>
+	</select>
+
+</mapper>

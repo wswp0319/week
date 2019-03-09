@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wp.week.mapper.DailyMapper">
+
+    <sql id="SqlColumns">
+	  id   id,
+	  user_id userId,
+	  dept dept,
+	  look_role lookRole,
+      work_result   workResult,
+      submit_content   submitContent,
+      content_description   contentDescription,
+      plan_start_date   planStartDate,
+      plan_end_date   planEndDate,
+      work_schedule   workSchedule,
+      demo_address   demoAddress,
+      claim   claim,
+      plan_b   planB,
+      submitter   submitter,
+      remarks   remarks,
+      update_time   updateTime,
+      create_time   createTime
+  </sql>
+
+    <select id="selectByPrimaryKey" resultType="com.wp.week.model.DailyDto" parameterType="java.lang.Integer">
+        select
+        <include refid="SqlColumns"/>
+        from tb_daily
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="getDailysByRole" resultType="com.wp.week.model.DailyDto">
+        SELECT 	id id,
+        userId ,
+        dept ,
+        lookRole,
+        workResult,
+        submitContent,
+        contentDescription,
+        planStartDate,
+        planEndDate,
+        workSchedule,
+        demoAddress,
+        claim,
+        planB,
+        submitter,
+        remarks,
+        updateTime,
+        createTime from
+        (
+        select
+        <include refid="SqlColumns"/>
+        from tb_daily
+        where 1=1
+        <if test="dept != null">
+            and dept = #{dept}
+        </if>
+        <if test="planStartDate != null">
+            and DATE_FORMAT(plan_start_date,'%Y-%m-%d') &gt;= DATE_FORMAT(#{planStartDate},'%Y-%m-%d')
+        </if>
+        <if test="planEndDate != null">
+            and DATE_FORMAT(plan_start_date,'%Y-%m-%d') &lt;= DATE_FORMAT(#{planEndDate},'%Y-%m-%d')
+        </if>
+        <if test="rule != 1">
+            and look_role != 1 order by submitter,update_time desc) dd
+        </if>
+        <if test="rule == 1">
+            order by submitter,update_time desc)dd
+        </if>
+
+        UNION
+        (
+        select
+        <include refid="SqlColumns"/>
+        from tb_daily
+        where 1=1
+        <if test="dept != null">
+            and dept = #{dept}
+        </if>
+        <if test="planStartDate != null">
+            and DATE_FORMAT(plan_start_date,'%Y-%m-%d') &gt;= DATE_FORMAT(#{planStartDate},'%Y-%m-%d')
+        </if>
+        <if test="planEndDate != null">
+            and DATE_FORMAT(plan_start_date,'%Y-%m-%d') &lt;= DATE_FORMAT(#{planEndDate},'%Y-%m-%d')
+        </if>
+        and #{username}= submitter
+        )ORDER BY
+        updateTime DESC
+    </select>
+    <select id="getDailysExcel" resultType="map">
+
+        SELECT 	id id,
+        userId ,
+        dept ,
+        lookRole,
+        workResult,
+        submitContent,
+        contentDescription,
+        planStartDate,
+        planEndDate,
+        workSchedule,
+        demoAddress,
+        claim,
+        planB,
+        submitter,
+        remarks,
+        updateTime,
+        createTime from
+        (
+        select
+        <include refid="SqlColumns"/>
+        from tb_daily
+        where 1=1
+        <if test="dept != null">
+            and dept = #{dept}
+        </if>
+        <if test="planStartDate != null">
+            and DATE_FORMAT(plan_start_date,'%Y-%m-%d') &gt;= DATE_FORMAT(#{planStartDate},'%Y-%m-%d')
+        </if>
+        <if test="planEndDate != null">
+            and DATE_FORMAT(plan_start_date,'%Y-%m-%d') &lt;= DATE_FORMAT(#{planEndDate},'%Y-%m-%d')
+        </if>
+        <if test="rule != 1">
+            and look_role != 1 order by submitter,update_time desc) dd
+        </if>
+        <if test="rule == 1">
+            order by submitter,update_time desc)dd
+        </if>
+        UNION
+        (
+        select
+        <include refid="SqlColumns"/>
+        from tb_daily
+        where 1=1
+        <if test="dept != null">
+            and dept = #{dept}
+        </if>
+        <if test="planStartDate != null">
+            and DATE_FORMAT(plan_start_date,'%Y-%m-%d') &gt;= DATE_FORMAT(#{planStartDate},'%Y-%m-%d')
+        </if>
+        <if test="planEndDate != null">
+            and DATE_FORMAT(plan_start_date,'%Y-%m-%d') &lt;= DATE_FORMAT(#{planEndDate},'%Y-%m-%d')
+        </if>
+        and #{username}= submitter
+        )
+        ORDER BY
+        updateTime DESC
+
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_daily
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.wp.week.model.DailyDto">
+    insert into tb_daily (id, user_id, dept, 
+      work_result, submit_content, content_description, 
+      plan_start_date, plan_end_date, work_schedule, 
+      demo_address, claim, plan_b, 
+      submitter, look_role, remarks, 
+      update_time, create_time)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{dept,jdbcType=INTEGER}, 
+      #{workResult,jdbcType=VARCHAR}, #{submitContent,jdbcType=VARCHAR}, #{contentDescription,jdbcType=VARCHAR}, 
+      #{planStartDate,jdbcType=VARCHAR}, #{planEndDate,jdbcType=VARCHAR}, #{workSchedule,jdbcType=VARCHAR}, 
+      #{demoAddress,jdbcType=VARCHAR}, #{claim,jdbcType=INTEGER}, #{planB,jdbcType=VARCHAR}, 
+      #{submitter,jdbcType=VARCHAR}, #{lookRole,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" parameterType="com.wp.week.model.DailyDto">
+        insert into tb_daily
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="dept != null">
+                dept,
+            </if>
+            <if test="workResult != null">
+                work_result,
+            </if>
+            <if test="submitContent != null">
+                submit_content,
+            </if>
+            <if test="contentDescription != null">
+                content_description,
+            </if>
+            <if test="planStartDate != null">
+                plan_start_date,
+            </if>
+            <if test="planEndDate != null">
+                plan_end_date,
+            </if>
+            <if test="workSchedule != null">
+                work_schedule,
+            </if>
+            <if test="demoAddress != null">
+                demo_address,
+            </if>
+            <if test="claim != null">
+                claim,
+            </if>
+            <if test="planB != null">
+                plan_b,
+            </if>
+            <if test="submitter != null">
+                submitter,
+            </if>
+            <if test="lookRole != null">
+                look_role,
+            </if>
+            <if test="remarks != null">
+                remarks,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="dept != null">
+                #{dept,jdbcType=INTEGER},
+            </if>
+            <if test="workResult != null">
+                #{workResult,jdbcType=VARCHAR},
+            </if>
+            <if test="submitContent != null">
+                #{submitContent,jdbcType=VARCHAR},
+            </if>
+            <if test="contentDescription != null">
+                #{contentDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="planStartDate != null">
+                #{planStartDate,jdbcType=VARCHAR},
+            </if>
+            <if test="planEndDate != null">
+                #{planEndDate,jdbcType=VARCHAR},
+            </if>
+            <if test="workSchedule != null">
+                #{workSchedule,jdbcType=VARCHAR},
+            </if>
+            <if test="demoAddress != null">
+                #{demoAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="claim != null">
+                #{claim,jdbcType=INTEGER},
+            </if>
+            <if test="planB != null">
+                #{planB,jdbcType=VARCHAR},
+            </if>
+            <if test="submitter != null">
+                #{submitter,jdbcType=VARCHAR},
+            </if>
+            <if test="lookRole != null">
+                #{lookRole,jdbcType=INTEGER},
+            </if>
+            <if test="remarks != null">
+                #{remarks,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.wp.week.model.DailyDto">
+        update tb_daily
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="dept != null">
+                dept = #{dept,jdbcType=INTEGER},
+            </if>
+            <if test="workResult != null">
+                work_result = #{workResult,jdbcType=VARCHAR},
+            </if>
+            <if test="submitContent != null">
+                submit_content = #{submitContent,jdbcType=VARCHAR},
+            </if>
+            <if test="contentDescription != null">
+                content_description = #{contentDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="planStartDate != null">
+                plan_start_date = #{planStartDate,jdbcType=VARCHAR},
+            </if>
+            <if test="planEndDate != null">
+                plan_end_date = #{planEndDate,jdbcType=VARCHAR},
+            </if>
+            <if test="workSchedule != null">
+                work_schedule = #{workSchedule,jdbcType=VARCHAR},
+            </if>
+            <if test="demoAddress != null">
+                demo_address = #{demoAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="claim != null">
+                claim = #{claim,jdbcType=INTEGER},
+            </if>
+            <if test="planB != null">
+                plan_b = #{planB,jdbcType=VARCHAR},
+            </if>
+            <if test="submitter != null">
+                submitter = #{submitter,jdbcType=VARCHAR},
+            </if>
+            <if test="lookRole != null">
+                look_role = #{lookRole,jdbcType=INTEGER},
+            </if>
+            <if test="remarks != null">
+                remarks = #{remarks,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.wp.week.model.DailyDto">
+    update tb_daily
+    set user_id = #{userId,jdbcType=INTEGER},
+      dept = #{dept,jdbcType=INTEGER},
+      work_result = #{workResult,jdbcType=VARCHAR},
+      submit_content = #{submitContent,jdbcType=VARCHAR},
+      content_description = #{contentDescription,jdbcType=VARCHAR},
+      plan_start_date = #{planStartDate,jdbcType=VARCHAR},
+      plan_end_date = #{planEndDate,jdbcType=VARCHAR},
+      work_schedule = #{workSchedule,jdbcType=VARCHAR},
+      demo_address = #{demoAddress,jdbcType=VARCHAR},
+      claim = #{claim,jdbcType=INTEGER},
+      plan_b = #{planB,jdbcType=VARCHAR},
+      submitter = #{submitter,jdbcType=VARCHAR},
+      look_role = #{lookRole,jdbcType=INTEGER},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

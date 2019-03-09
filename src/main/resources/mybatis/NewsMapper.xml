@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wp.week.mapper.NewsMapper">
+
+	<!-- 字段-->
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selInfo" resultType="newsDto">
+		 SELECT
+		 <include refid="sqlColumns" />
+		 FROM tb_news
+		 WHERE id = #{id}
+	</select>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="del" parameterType="newsDto">
+		 DELETE FROM tb_news
+		 WHERE id = #{id}
+	</delete>
+
+	<!-- 添加 -->
+	<insert id="add" parameterType="newsDto" keyColumn="id" useGeneratedKeys="true">
+		 INSERT INTO tb_news
+ 			(
+ 			id,
+			title,
+			content,
+			keywords,
+			is_top,
+			is_active,
+			hit,
+			create_time,
+			update_time,
+			username
+ 			) 
+		 VALUES 
+ 			(
+ 			#{id},
+			#{title},
+			#{content},
+			#{keywords},
+			#{isTop},
+			#{isActive},
+			#{hit},
+			#{createTime},
+			#{updateTime},
+			#{username}
+ 			) 
+	</insert>
+
+	<!-- 修 改-->
+	<update id="edit" parameterType="newsDto">
+		 UPDATE tb_news
+ 		 <trim prefix="SET" suffixOverrides=","> 
+			<if test="title != null">title = #{title},</if>
+			<if test="content != null">content = #{content},</if>
+			<if test="keywords != null">keywords = #{keywords},</if>
+			<if test="isTop != null">is_top = #{isTop},</if>
+			<if test="isActive != null">is_active = #{isActive},</if>
+			<if test="hit != null">hit = #{hit},</if>
+			<if test="createTime != null">create_time = #{createTime},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+			<if test="username != null">username = #{username},</if>
+ 		 </trim>
+		 WHERE id = #{id}
+	</update>
+
+	<sql id="sqlColumns">
+    	id id, 
+    	title title, 
+    	content content, 
+    	keywords keywords, 
+    	is_top isTop, 
+    	is_active isActive, 
+    	hit hit, 
+    	create_time createTime, 
+    	update_time updateTime, 
+    	username username    
+	</sql>
+
+	<!-- 条件-->
+	<sql id="sqlWhere">
+    	<where>
+	    	<if test="id != null"> and id = #{id}</if> 
+        	<if test="title != null"> and title = #{title}</if> 
+        	<if test="content != null"> and content = #{content}</if> 
+        	<if test="keywords != null"> and keywords = #{keywords}</if> 
+        	<if test="isTop != null"> and is_top = #{isTop}</if> 
+        	<if test="isActive != null"> and is_active = #{isActive}</if> 
+        	<if test="hit != null"> and hit = #{hit}</if> 
+        	<if test="createTime != null"> and create_time = #{createTime}</if> 
+        	<if test="updateTime != null"> and update_time = #{updateTime}</if> 
+        	<if test="username != null"> and username = #{username}</if> 
+    	</where>
+	</sql>
+
+	<select id="count" resultType="int">
+		 SELECT
+		 count(id)
+		 FROM tb_news
+		 <include refid="sqlWhere"/>
+	</select>
+
+	<select id="list" resultType="newsDto">
+		 SELECT
+		 <include refid="sqlColumns"/>
+		 FROM tb_news
+		 <include refid="sqlWhere"/>
+	</select>
+
+	<select id="queryPage" resultType="newsDto">
+		 SELECT
+		 <include refid="sqlColumns"/>
+		 FROM tb_news
+		 <include refid="sqlWhere"/>
+	</select>
+
+</mapper>

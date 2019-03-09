@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>文章添加--layui后台管理模板</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="../../../static/layui/css/layui.css" media="all" />
+</head>
+
+<body class="childrenBody">
+	<form class="layui-form" action="/addOrUpdatePlantInfo">
+		<input type="hidden" name="flantInfoId" >
+		<!--plantno粮食编号-->
+		<!--plantname植物名称-->
+		<!--gsno所属类别-->
+		<!--prodarea产地分布-->
+		<!--ecolhabit生态习性-->
+		<!--imagepath图片路径-->
+		<!--dimencode二维码-->
+		<!--addtime发布时间-->
+		<!--modtime修改时间-->
+		<!--username发布者-->
+		<!--isstate是否发布-->
+		<!--remark备注-->
+
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">粮食编号</label>
+			<div class="layui-input-block">
+				<input name="workResult" required="required" type="number" class="layui-input newsName" lay-verify="required" placeholder="粮食编号" >
+			</div>
+		</div>
+		<!--<div class="layui-form-item">-->
+			<!--<div class="layui-inline">-->
+				<!--<label class="layui-form-label">标准要求</label>-->
+				<!--<div class="layui-input-block">-->
+					<!--<input checked="checked" type="checkbox" name="claim" class="tuijian" title="合格">-->
+					<!--<div class="layui-input-inline">-->
+						<!--<select name="workSchedule" lay-verify="required" lay-search="">-->
+							<!--<option value="100%">100%</option>-->
+							<!--<option value="50%">50%</option>-->
+							<!--<option value="90%">90%</option>-->
+							<!--<option value="80%">80%</option>-->
+							<!--<option value="70%">70%</option>-->
+							<!--<option value="60%">60%</option>-->
+							<!--<option value="40%">40%</option>-->
+							<!--<option value="30%">30%</option>-->
+							<!--<option value="20%">20%</option>-->
+							<!--<option value="10%">10%</option>-->
+						<!--</select>-->
+					<!--</div>-->
+				<!--</div>-->
+
+			<!--</div>-->
+
+		<!--</div>-->
+		<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">开始时间</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input newsTime" required="required"  name="planStartDate" lay-verify="required|date"  onclick="layui.laydate({elem:this})">
+			</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">完成时间</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input newsTime" required="required"  name="planEndDate" lay-verify="required|date"  onclick="layui.laydate({elem:this})">
+			</div>
+		</div>
+		</div>
+		<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">浏览权限</label>
+			<div class="layui-input-inline">
+				<select name="lookRole" class="newsLook" lay-filter="browseLook">
+					<option value="2">对所有人开放</option>
+					<option value="1">对管理员开放</option>
+				</select>
+			</div>
+		</div>
+		</div>
+
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">提交内容</label>
+			<div class="layui-input-block">
+				<input type="text" name="submitContent" required="required"  class="layui-input"  placeholder="请输入文章提交内容">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">内容说明</label>
+			<div class="layui-input-block">
+				<textarea placeholder="请输入内容说明" required="required"  name="contentDescription"  class="layui-textarea"></textarea>
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">演示地址</label>
+			<div class="layui-input-block">
+				<input type="text" name="demoAddress" required="required"  class="layui-input"  placeholder="请输入文章演示地址">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">补救措施</label>
+			<div class="layui-input-block">
+				<input type="text" name="planB" class="layui-input"  placeholder="请输入">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">备注</label>
+			<div class="layui-input-block">
+				<input type="text" name="remarks" class="layui-input"   placeholder="请输入文章备注">
+			</div>
+		</div>
+
+
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" type="submit">立即提交</button>
+				<!--<button class="layui-btn" lay-submit="" lay-filter="addNews">立即提交</button>-->
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+		    </div>
+		</div>
+	</form>
+	<script type="text/javascript" src="../../../static/layui/layui.js"></script>
+	<script type="text/javascript" src="../../../static/page/js/newsAdd.js"></script>
+</body>
+</html>

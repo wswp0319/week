@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wp.week.mapper.MenuMapper">
+    <sql id="sqlColumns">
+      id id,
+      title title,
+      icon icon,
+      href href,
+      create_time createTime
+    </sql>
+
+    <select id="selectByPrimaryKey" resultType="com.wp.week.model.MenuDto" parameterType="java.lang.Integer">
+        select
+        <include refid="sqlColumns"/>
+        from tb_menu
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="getMenusByUid" resultType="com.wp.week.model.MenuDto">
+        select
+        m.id,
+        m.title,
+        m.icon,
+        m.href,
+        m.create_time createTime
+--         from tb_user u
+--         LEFT JOIN tb_user_role ur on u.id = ur.user_id
+--         LEFT JOIN tb_role r on ur.role_id = r.id
+--         LEFT JOIN tb_role_menu rm on r.id = rm.role_id
+--         LEFT JOIN tb_menu m on rm.menu_id = m.id
+        from tb_menu m
+        where 1 = 1
+        <if test="rule == 1">
+            and m.id in (2,3,15,7,8,9,10,11,12)
+        </if>
+        <if test="rule == 2">
+            and m.id in (2,15,8,9,10,11)
+        </if>
+        order by m.id
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_menu
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.wp.week.model.MenuDto">
+    insert into tb_menu (id, title, icon, 
+      href, create_time)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, 
+      #{href,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" parameterType="com.wp.week.model.MenuDto">
+        insert into tb_menu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="icon != null">
+                icon,
+            </if>
+            <if test="href != null">
+                href,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="icon != null">
+                #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="href != null">
+                #{href,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.wp.week.model.MenuDto">
+        update tb_menu
+        <set>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="icon != null">
+                icon = #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="href != null">
+                href = #{href,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.wp.week.model.MenuDto">
+    update tb_menu
+    set title = #{title,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      href = #{href,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

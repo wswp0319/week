@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wp.week.mapper.OrderMapper">
+
+	<!-- 字段-->
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selInfo" resultType="orderDto">
+		 SELECT
+		 <include refid="sqlColumns" />
+		 FROM tb_order
+		 WHERE id = #{id}
+	</select>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="del" parameterType="orderDto">
+		 DELETE FROM tb_order
+		 WHERE id = #{id}
+	</delete>
+
+	<!-- 添加 -->
+	<insert id="add" parameterType="orderDto" keyColumn="id" useGeneratedKeys="true">
+		 INSERT INTO tb_order
+ 			(
+ 			id,
+			order_no,
+			stuname,
+			confirm_time,
+			price,
+			manager,
+			isactive,
+			remark
+ 			) 
+		 VALUES 
+ 			(
+ 			#{id},
+			#{orderNo},
+			#{stuname},
+			#{confirmTime},
+			#{price},
+			#{manager},
+			#{isactive},
+			#{remark}
+ 			) 
+	</insert>
+
+	<!-- 修 改-->
+	<update id="edit" parameterType="orderDto">
+		 UPDATE tb_order
+ 		 <trim prefix="SET" suffixOverrides=","> 
+			<if test="orderNo != null">order_no = #{orderNo},</if>
+			<if test="stuname != null">stuname = #{stuname},</if>
+			<if test="confirmTime != null">confirm_time = #{confirmTime},</if>
+			<if test="price != null">price = #{price},</if>
+			<if test="manager != null">manager = #{manager},</if>
+			<if test="isactive != null">isactive = #{isactive},</if>
+			<if test="remark != null">remark = #{remark},</if>
+ 		 </trim>
+		 WHERE id = #{id}
+	</update>
+
+	<sql id="sqlColumns">
+    	id id, 
+    	order_no orderNo, 
+    	stuname stuname, 
+    	confirm_time confirmTime, 
+    	price price, 
+    	manager manager, 
+    	isactive isactive, 
+    	remark remark    
+	</sql>
+
+	<!-- 条件-->
+	<sql id="sqlWhere">
+    	<where>
+	    	<if test="id != null"> and id = #{id}</if> 
+        	<if test="orderNo != null"> and order_no = #{orderNo}</if> 
+        	<if test="stuname != null"> and stuname = #{stuname}</if> 
+        	<if test="confirmTime != null"> and confirm_time = #{confirmTime}</if> 
+        	<if test="price != null"> and price = #{price}</if> 
+        	<if test="manager != null"> and manager = #{manager}</if> 
+        	<if test="isactive != null"> and isactive = #{isactive}</if> 
+        	<if test="remark != null"> and remark = #{remark}</if> 
+    	</where>
+	</sql>
+
+	<select id="count" resultType="int">
+		 SELECT
+		 count(id)
+		 FROM tb_order
+		 <include refid="sqlWhere"/>
+	</select>
+
+	<select id="list" resultType="orderDto">
+		 SELECT
+		 <include refid="sqlColumns"/>
+		 FROM tb_order
+		 <include refid="sqlWhere"/>
+	</select>
+
+	<select id="queryPage" resultType="orderDto">
+		 SELECT
+		 <include refid="sqlColumns"/>
+		 FROM tb_order
+		 <include refid="sqlWhere"/>
+	</select>
+
+</mapper>

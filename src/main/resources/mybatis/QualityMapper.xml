@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wp.week.mapper.QualityMapper">
+
+	<!-- 字段-->
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selInfo" resultType="qualityDto">
+		 SELECT
+		 <include refid="sqlColumns" />
+		 FROM tb_quality
+		 WHERE id = #{id}
+	</select>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="del" parameterType="qualityDto">
+		 DELETE FROM tb_quality
+		 WHERE id = #{id}
+	</delete>
+
+	<!-- 添加 -->
+	<insert id="add" parameterType="qualityDto" keyColumn="id" useGeneratedKeys="true">
+		 INSERT INTO tb_quality
+ 			(
+ 			id,
+			grade,
+			unit_weight,
+			moisture,
+			impurity,
+			create_time,
+			update_time,
+			checker,
+			is_active,
+			remark
+ 			) 
+		 VALUES 
+ 			(
+ 			#{id},
+			#{grade},
+			#{unitWeight},
+			#{moisture},
+			#{impurity},
+			#{createTime},
+			#{updateTime},
+			#{checker},
+			#{isActive},
+			#{remark}
+ 			) 
+	</insert>
+
+	<!-- 修 改-->
+	<update id="edit" parameterType="qualityDto">
+		 UPDATE tb_quality
+ 		 <trim prefix="SET" suffixOverrides=","> 
+			<if test="grade != null">grade = #{grade},</if>
+			<if test="unitWeight != null">unit_weight = #{unitWeight},</if>
+			<if test="moisture != null">moisture = #{moisture},</if>
+			<if test="impurity != null">impurity = #{impurity},</if>
+			<if test="createTime != null">create_time = #{createTime},</if>
+			<if test="updateTime != null">update_time = #{updateTime},</if>
+			<if test="checker != null">checker = #{checker},</if>
+			<if test="isActive != null">is_active = #{isActive},</if>
+			<if test="remark != null">remark = #{remark},</if>
+ 		 </trim>
+		 WHERE id = #{id}
+	</update>
+
+	<sql id="sqlColumns">
+    	id id, 
+    	grade grade, 
+    	unit_weight unitWeight, 
+    	moisture moisture, 
+    	impurity impurity, 
+    	create_time createTime, 
+    	update_time updateTime, 
+    	checker checker, 
+    	is_active isActive, 
+    	remark remark    
+	</sql>
+
+	<!-- 条件-->
+	<sql id="sqlWhere">
+    	<where>
+	    	<if test="id != null"> and id = #{id}</if> 
+        	<if test="grade != null"> and grade = #{grade}</if> 
+        	<if test="unitWeight != null"> and unit_weight = #{unitWeight}</if> 
+        	<if test="moisture != null"> and moisture = #{moisture}</if> 
+        	<if test="impurity != null"> and impurity = #{impurity}</if> 
+        	<if test="createTime != null"> and create_time = #{createTime}</if> 
+        	<if test="updateTime != null"> and update_time = #{updateTime}</if> 
+        	<if test="checker != null"> and checker = #{checker}</if> 
+        	<if test="isActive != null"> and is_active = #{isActive}</if> 
+        	<if test="remark != null"> and remark = #{remark}</if> 
+    	</where>
+	</sql>
+
+	<select id="count" resultType="int">
+		 SELECT
+		 count(id)
+		 FROM tb_quality
+		 <include refid="sqlWhere"/>
+	</select>
+
+	<select id="list" resultType="qualityDto">
+		 SELECT
+		 <include refid="sqlColumns"/>
+		 FROM tb_quality
+		 <include refid="sqlWhere"/>
+	</select>
+
+	<select id="queryPage" resultType="qualityDto">
+		 SELECT
+		 <include refid="sqlColumns"/>
+		 FROM tb_quality
+		 <include refid="sqlWhere"/>
+	</select>
+
+</mapper>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wp.week.mapper.IningMapper">
+
+	<!-- 字段-->
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selInfo" resultType="iningDto">
+		 SELECT
+		 <include refid="sqlColumns" />
+		 FROM tb_ining
+		 WHERE id = #{id}
+	</select>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="del" parameterType="iningDto">
+		 DELETE FROM tb_ining
+		 WHERE id = #{id}
+	</delete>
+
+	<!-- 添加 -->
+	<insert id="add" parameterType="iningDto" keyColumn="id" useGeneratedKeys="true">
+		 INSERT INTO tb_ining
+ 			(
+ 			id,
+			grain_number,
+			in_number,
+			storage_time,
+			remark
+ 			) 
+		 VALUES 
+ 			(
+ 			#{id},
+			#{grainNumber},
+			#{inNumber},
+			#{storageTime},
+			#{remark}
+ 			) 
+	</insert>
+
+	<!-- 修 改-->
+	<update id="edit" parameterType="iningDto">
+		 UPDATE tb_ining
+ 		 <trim prefix="SET" suffixOverrides=","> 
+			<if test="grainNumber != null">grain_number = #{grainNumber},</if>
+			<if test="inNumber != null">in_number = #{inNumber},</if>
+			<if test="storageTime != null">storage_time = #{storageTime},</if>
+			<if test="remark != null">remark = #{remark},</if>
+ 		 </trim>
+		 WHERE id = #{id}
+	</update>
+
+	<sql id="sqlColumns">
+    	id id, 
+    	grain_number grainNumber, 
+    	in_number inNumber, 
+    	storage_time storageTime, 
+    	remark remark    
+	</sql>
+
+	<!-- 条件-->
+	<sql id="sqlWhere">
+    	<where>
+	    	<if test="id != null"> and id = #{id}</if> 
+        	<if test="grainNumber != null"> and grain_number = #{grainNumber}</if> 
+        	<if test="inNumber != null"> and in_number = #{inNumber}</if> 
+        	<if test="storageTime != null"> and storage_time = #{storageTime}</if> 
+        	<if test="remark != null"> and remark = #{remark}</if> 
+    	</where>
+	</sql>
+
+	<select id="count" resultType="int">
+		 SELECT
+		 count(id)
+		 FROM tb_ining
+		 <include refid="sqlWhere"/>
+	</select>
+
+	<select id="list" resultType="iningDto">
+		 SELECT
+		case grain_number
+		when 1 then '小麦'
+		when 2 then '大米'
+		when 3 then '棉花'
+		when 4 then '玉米'
+		when 5 then '大豆'
+		when 6 then '青稞'
+		when 7 then '马铃薯'
+		when 8 then '高粱'
+		when 9 then '谷子'
+		when 10 then '油菜'
+
+		end grainNumber,
+		in_number inNumber,
+		storage_time storageTime,
+		remark remark
+		FROM tb_ining
+		 <include refid="sqlWhere"/>
+	</select>
+
+	<select id="queryPage" resultType="iningDto">
+		 SELECT
+		 <include refid="sqlColumns"/>
+		 FROM tb_ining
+		 <include refid="sqlWhere"/>
+	</select>
+
+</mapper>

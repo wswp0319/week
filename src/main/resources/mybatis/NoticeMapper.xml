@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wp.week.mapper.NoticeMapper">
+
+	<!-- 字段-->
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selInfo" resultType="noticeDto">
+		 SELECT
+		 <include refid="sqlColumns" />
+		 FROM tb_notice
+		 WHERE id = #{id}
+	</select>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="del" parameterType="noticeDto">
+		 DELETE FROM tb_notice
+		 WHERE id = #{id}
+	</delete>
+
+	<!-- 添加 -->
+	<insert id="add" parameterType="noticeDto" keyColumn="id" useGeneratedKeys="true">
+		 INSERT INTO tb_notice
+ 			(
+ 			id,
+			title,
+			content,
+			username,
+			create_time,
+			is_asses
+ 			) 
+		 VALUES 
+ 			(
+ 			#{id},
+			#{title},
+			#{content},
+			#{username},
+			#{createTime},
+			#{isAsses}
+ 			) 
+	</insert>
+
+	<!-- 修 改-->
+	<update id="edit" parameterType="noticeDto">
+		 UPDATE tb_notice
+ 		 <trim prefix="SET" suffixOverrides=","> 
+			<if test="title != null">title = #{title},</if>
+			<if test="content != null">content = #{content},</if>
+			<if test="username != null">username = #{username},</if>
+			<if test="createTime != null">create_time = #{createTime},</if>
+			<if test="isAsses != null">is_asses = #{isAsses},</if>
+ 		 </trim>
+		 WHERE id = #{id}
+	</update>
+
+	<sql id="sqlColumns">
+    	id id, 
+    	title title, 
+    	content content, 
+    	username username, 
+    	create_time createTime, 
+    	is_asses isAsses    
+	</sql>
+
+	<!-- 条件-->
+	<sql id="sqlWhere">
+    	<where>
+	    	<if test="id != null"> and id = #{id}</if> 
+        	<if test="title != null"> and title = #{title}</if> 
+        	<if test="content != null"> and content = #{content}</if> 
+        	<if test="username != null"> and username = #{username}</if> 
+        	<if test="createTime != null"> and create_time = #{createTime}</if> 
+        	<if test="isAsses != null"> and is_asses = #{isAsses}</if> 
+    	</where>
+	</sql>
+
+	<select id="count" resultType="int">
+		 SELECT
+		 count(id)
+		 FROM tb_notice
+		 <include refid="sqlWhere"/>
+	</select>
+
+	<select id="list" resultType="noticeDto">
+		 SELECT
+		 <include refid="sqlColumns"/>
+		 FROM tb_notice
+		 <include refid="sqlWhere"/>
+	</select>
+
+	<select id="queryPage" resultType="noticeDto">
+		 SELECT
+		 <include refid="sqlColumns"/>
+		 FROM tb_notice
+		 <include refid="sqlWhere"/>
+	</select>
+
+</mapper>

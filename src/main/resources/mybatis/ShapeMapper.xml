@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wp.week.mapper.ShapeMapper">
+
+	<!-- 字段-->
+	<!-- 查询（根据主键ID查询） -->
+	<select id="selInfo" resultType="shapeDto">
+		 SELECT
+		 <include refid="sqlColumns" />
+		 FROM tb_shape
+		 WHERE id = #{id}
+	</select>
+
+	<!--删除：根据主键ID删除-->
+	<delete id="del" parameterType="shapeDto">
+		 DELETE FROM tb_shape
+		 WHERE id = #{id}
+	</delete>
+
+	<!-- 添加 -->
+	<insert id="add" parameterType="shapeDto" keyColumn="id" useGeneratedKeys="true">
+		 INSERT INTO tb_shape
+ 			(
+ 			id,
+			grain_form,
+			longness,
+			width,
+			checktime,
+			checker,
+			isactive,
+			remark
+ 			) 
+		 VALUES 
+ 			(
+ 			#{id},
+			#{grainForm},
+			#{longness},
+			#{width},
+			#{checktime},
+			#{checker},
+			#{isactive},
+			#{remark}
+ 			) 
+	</insert>
+
+	<!-- 修 改-->
+	<update id="edit" parameterType="shapeDto">
+		 UPDATE tb_shape
+ 		 <trim prefix="SET" suffixOverrides=","> 
+			<if test="grainForm != null">grain_form = #{grainForm},</if>
+			<if test="longness != null">longness = #{longness},</if>
+			<if test="width != null">width = #{width},</if>
+			<if test="checktime != null">checktime = #{checktime},</if>
+			<if test="checker != null">checker = #{checker},</if>
+			<if test="isactive != null">isactive = #{isactive},</if>
+			<if test="remark != null">remark = #{remark},</if>
+ 		 </trim>
+		 WHERE id = #{id}
+	</update>
+
+	<sql id="sqlColumns">
+    	id id, 
+    	grain_form grainForm, 
+    	longness longness, 
+    	width width, 
+    	checktime checktime, 
+    	checker checker, 
+    	isactive isactive, 
+    	remark remark    
+	</sql>
+
+	<!-- 条件-->
+	<sql id="sqlWhere">
+    	<where>
+	    	<if test="id != null"> and id = #{id}</if> 
+        	<if test="grainForm != null"> and grain_form = #{grainForm}</if> 
+        	<if test="longness != null"> and longness = #{longness}</if> 
+        	<if test="width != null"> and width = #{width}</if> 
+        	<if test="checktime != null"> and checktime = #{checktime}</if> 
+        	<if test="checker != null"> and checker = #{checker}</if> 
+        	<if test="isactive != null"> and isactive = #{isactive}</if> 
+        	<if test="remark != null"> and remark = #{remark}</if> 
+    	</where>
+	</sql>
+
+	<select id="count" resultType="int">
+		 SELECT
+		 count(id)
+		 FROM tb_shape
+		 <include refid="sqlWhere"/>
+	</select>
+
+	<select id="list" resultType="shapeDto">
+		 SELECT
+		 <include refid="sqlColumns"/>
+		 FROM tb_shape
+		 <include refid="sqlWhere"/>
+	</select>
+
+	<select id="queryPage" resultType="shapeDto">
+		 SELECT
+		 <include refid="sqlColumns"/>
+		 FROM tb_shape
+		 <include refid="sqlWhere"/>
+	</select>
+
+</mapper>

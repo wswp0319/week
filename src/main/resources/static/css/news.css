@@ -1,0 +1,41 @@
+.news_search{ padding:10px 10px; }
+.layui-table,.layui-table th{ text-align:center; }
+.news_list .layui-form-switch{ margin-top:0; }
+
+/*分页*/
+#page{ text-align:right; }
+
+.contain {
+    width:900px;
+    margin: 15px auto;
+    font-family: ‘Microsoft YaHei’; }
+
+table {
+    width:100%;
+    text-align: center;
+    border:1px solid #e3e6e8;
+    border-collapse: collapse;
+    table-layout: fixed;
+    display: table; }
+
+th,td {
+    border: 1px solid #e3e6e8;
+    height:38px;
+    line-height: 38px;
+    overflow: hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+
+th {
+    background-color: #189AD6;
+    color:#fff; }
+
+.layui-layer {
+    word-wrap: break-word;
+    word-break: break-all; }
+/*---------------------*/
+/*作者：花堪泽*/
+/*来源：CSDN*/
+/*原文：https://blog.csdn.net/github_37517254/article/details/56012412*/
+/*版权声明：本文为博主原创文章，转载请附上博文链接！*/

@@ -1,0 +1,14 @@
+{
+    "cmsName": "智慧粮仓系统",
+    "version": "v1.0.1",
+    "author": "Molly",
+    "homePage": "page/index.html",
+    "server": "windows",
+    "dataBase": "MySql5.7",
+    "maxUpload": "2M",
+    "userRights": "总管理员",
+    "description": "智慧粮仓系统",
+    "powerby": "@2018 Molly",
+    "record": "京ICP备14040xxx号-1",
+    "keywords": ""
+}
